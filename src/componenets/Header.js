@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
@@ -71,8 +72,12 @@ function Header() {
           </ul>
         </div>
         <div className="navbar-end">
-          <a className="btn mr-4">Register</a>
-          <a className="btn">Login</a>
+          <Link to="/register" className="btn mr-4">
+            Register
+          </Link>
+          <Link to="/login" className="btn">
+            Login
+          </Link>
         </div>
       </div>
     </>
