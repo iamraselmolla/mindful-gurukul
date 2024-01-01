@@ -1,5 +1,6 @@
 import React from "react";
 import { classForInput, classForLabel } from "./css_classes";
+import Input from "../shared/Input";
 
 function Register() {
   return (
@@ -23,12 +24,7 @@ function Register() {
                     Name
                   </label>
                   <div className="mt-2">
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      className={classForInput}
-                    />
+                    <Input type='text' name="name" id="name" />
                   </div>
                 </div>
 
@@ -40,12 +36,9 @@ function Register() {
                     Email address
                   </label>
                   <div className="mt-2">
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      className={classForInput}
-                    />
+
+                    <Input type='email' name="email" id="email" />
+
                   </div>
                 </div>
                 <div className="mb-4">
@@ -56,12 +49,7 @@ function Register() {
                     Phone Number
                   </label>
                   <div className="mt-2">
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="number"
-                      className={classForInput}
-                    />
+                    <Input type='number' name="phone" id="phone" />
                   </div>
                 </div>
                 <div className="mb-4">
@@ -73,13 +61,13 @@ function Register() {
                   </label>
                   <div className="mt-2 flex gap-6">
                     <div className="flex gap-2">
-                      <label>Male</label> <input type="radio" name="radio-1" className="radio" />
+                      <label>Male</label> <input type="radio" name="gender" value='male' className="radio" />
                     </div>
                     <div className="flex gap-2">
-                      <label>Female</label> <input type="radio" name="radio-1" className="radio" />
+                      <label>Female</label> <input type="radio" name="gender" value='female' className="radio" />
                     </div>
                     <div className="flex gap-2">
-                      <label>Others</label> <input type="radio" name="radio-1" className="radio" />
+                      <label>Others</label> <input type="radio" name="gender" value='others' className="radio" />
                     </div>
                   </div>
                 </div>
@@ -205,9 +193,9 @@ function Register() {
                 </div>
                 <button
                   type="submit"
-                  className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="rounded-md bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                  Save
+                  Register Now !
                 </button>
 
 
