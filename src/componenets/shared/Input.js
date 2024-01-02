@@ -1,5 +1,5 @@
 import React from "react";
-import { classForInput } from "../page/css_classes";
+import { classForInput } from "./css_classes";
 
 const Input = ({ type, name, id, value, onChange }) => {
   return (

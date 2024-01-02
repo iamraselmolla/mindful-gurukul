@@ -1,6 +1,6 @@
 import React from "react";
-import { classForLabel } from "./css_classes";
 import Input from "../shared/Input";
+import { classForLabel } from "../shared/css_classes";
 
 function Login() {
   return (
@@ -14,7 +14,7 @@ function Login() {
             <form>
               <div>
                 <div className="mb-4">
-                  <label for="name" className={classForLabel}>
+                  <label htmlFor="name" className={classForLabel}>
                     Email
                   </label>
                   <div className="mt-2">
@@ -22,7 +22,7 @@ function Login() {
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label for="password" className={classForLabel}>
+                  <label htmlFor="password" className={classForLabel}>
                     Password
                   </label>
                   <div className="mt-2">

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { classForInput, classForLabel } from "./css_classes";
 import Input from "../shared/Input";
+import { classForLabel } from "../shared/css_classes";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -8,33 +8,39 @@ function Register() {
     email: "",
     phone: "",
     gender: "",
-    linkedin: false,
-    friends: false,
-    jobportal: false,
-    others: false,
     city: "Mumbai",
     state: "Gujarat",
+    howDidYouHear: [],
   });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    if (type === "checkbox") {
+      setFormData((prevData) => ({
+        ...prevData,
+        howDidYouHear: checked
+          ? [...prevData.howDidYouHear, name]
+          : prevData.howDidYouHear.filter((item) => item !== name),
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you can fetch the data or perform any other action with the form data
     console.log("Form data:", formData);
+    // You can add logic here to submit the form data to the server or perform other actions
   };
 
   return (
     <section>
       <div className="container mx-auto px-4">
-        <div className="border-b border-gray-900/10 pb-12">
+        <div className="border-gray-900/10 pb-12">
           <h2 className="text-3xl font-semibold leading-7 text-gray-900">
             Register Yourself!
           </h2>
@@ -136,6 +142,8 @@ function Register() {
                             id="linkedin"
                             name="linkedin"
                             type="checkbox"
+                            checked={formData.howDidYouHear.includes("linkedin")}
+                            onChange={handleChange}
                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                           />
                           <label
@@ -150,6 +158,8 @@ function Register() {
                             id="friends"
                             name="friends"
                             type="checkbox"
+                            checked={formData.howDidYouHear.includes("friends")}
+                            onChange={handleChange}
                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                           />
                           <label
@@ -161,13 +171,15 @@ function Register() {
                         </div>
                         <div className="flex h-6 items-center gap-2">
                           <input
-                            id="jobportal"
-                            name="jobportal"
+                            id="job-portal"
+                            name="job-portal"
                             type="checkbox"
+                            checked={formData.howDidYouHear.includes("job-portal")}
+                            onChange={handleChange}
                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                           />
                           <label
-                            htmlFor="jobportal"
+                            htmlFor="job-portal"
                             className="font-medium text-gray-900"
                           >
                             Job Portals
@@ -178,6 +190,8 @@ function Register() {
                             id="others"
                             name="others"
                             type="checkbox"
+                            checked={formData.howDidYouHear.includes("others")}
+                            onChange={handleChange}
                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                           />
                           <label
@@ -194,41 +208,43 @@ function Register() {
                   </fieldset>
                 </div>
 
-                <div className="mb-4">
-                  <label htmlFor="city" className={classForLabel}>
-                    City
-                  </label>
-                  <div className="mt-2">
-                    <select
-                      id="city"
-                      name="city"
-                      className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                      value={formData.city}
-                      onChange={handleChange}
-                    >
-                      <option>Mumbai</option>
-                      <option>Pune</option>
-                      <option>Ahmedabad</option>
-                    </select>
+                <div className="flex justify-between gap-3 items-center">
+                  <div className="mb-4 w-full">
+                    <label htmlFor="city" className={classForLabel}>
+                      City
+                    </label>
+                    <div className="mt-2">
+                      <select
+                        id="city"
+                        name="city"
+                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                        value={formData.city}
+                        onChange={handleChange}
+                      >
+                        <option>Mumbai</option>
+                        <option>Pune</option>
+                        <option>Ahmedabad</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
 
-                <div className="mb-4">
-                  <label htmlFor="state" className={classForLabel}>
-                    State
-                  </label>
-                  <div className="mt-2">
-                    <select
-                      id="state"
-                      name="state"
-                      className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                      value={formData.state}
-                      onChange={handleChange}
-                    >
-                      <option>Gujarat</option>
-                      <option>Maharashtra</option>
-                      <option>Karnataka</option>
-                    </select>
+                  <div className="mb-4 w-full">
+                    <label htmlFor="state" className={classForLabel}>
+                      State
+                    </label>
+                    <div className="mt-2">
+                      <select
+                        id="state"
+                        name="state"
+                        className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                        value={formData.state}
+                        onChange={handleChange}
+                      >
+                        <option>Gujarat</option>
+                        <option>Maharashtra</option>
+                        <option>Karnataka</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
@@ -248,6 +264,7 @@ function Register() {
       </div>
     </section>
   );
+
 }
 
 export default Register;
