@@ -130,23 +130,61 @@ function Register() {
                       How did you hear about this
                     </legend>
                     <div className="mt-2 gap-4 flex">
-                      <div className="relative flex gap-x-3">
-                        <div className="flex h-6 items-center">
+                      <div className="relative flex gap-x-6">
+                        <div className="flex h-6 items-center gap-2">
                           <input
                             id="linkedin"
                             name="linkedin"
                             type="checkbox"
                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                            onChange={handleChange}
-                            checked={formData.linkedin}
                           />
-                        </div>
-                        <div className="text-sm leading-6">
                           <label
                             htmlFor="linkedin"
                             className="font-medium text-gray-900"
                           >
                             LinkedIn
+                          </label>
+                        </div>
+                        <div className="flex h-6 items-center gap-2">
+                          <input
+                            id="friends"
+                            name="friends"
+                            type="checkbox"
+                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                          />
+                          <label
+                            htmlFor="friends"
+                            className="font-medium text-gray-900"
+                          >
+                            Friends
+                          </label>
+                        </div>
+                        <div className="flex h-6 items-center gap-2">
+                          <input
+                            id="jobportal"
+                            name="jobportal"
+                            type="checkbox"
+                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                          />
+                          <label
+                            htmlFor="jobportal"
+                            className="font-medium text-gray-900"
+                          >
+                            Job Portals
+                          </label>
+                        </div>
+                        <div className="flex h-6 items-center gap-2">
+                          <input
+                            id="others"
+                            name="others"
+                            type="checkbox"
+                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                          />
+                          <label
+                            htmlFor="linkedin"
+                            className="font-medium text-gray-900"
+                          >
+                            Others
                           </label>
                         </div>
                       </div>
