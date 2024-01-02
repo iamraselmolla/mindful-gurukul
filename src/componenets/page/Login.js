@@ -1,6 +1,6 @@
 import React from "react";
 import Input from "../shared/Input";
-import { classForLabel } from "../shared/css_classes";
+import { classForLabel, classForSubmitBtn } from "../shared/css_classes";
 
 function Login() {
   return (
@@ -29,6 +29,12 @@ function Login() {
                     <Input type="password" name="password" id="password" />
                   </div>
                 </div>
+                <button
+                  type="submit"
+                  className={classForSubmitBtn}
+                >
+                  Login
+                </button>
               </div>
             </form>
             <div className="flex justify-center items-center">

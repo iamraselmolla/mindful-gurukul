@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Input from "../shared/Input";
-import { classForLabel } from "../shared/css_classes";
+import { classForLabel, classForSubmitBtn } from "../shared/css_classes";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -11,6 +13,7 @@ function Register() {
     city: "Mumbai",
     state: "Gujarat",
     howDidYouHear: [],
+    password: ''
   });
 
   const handleChange = (e) => {
@@ -31,10 +34,19 @@ function Register() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data:", formData);
-    // You can add logic here to submit the form data to the server or perform other actions
+    if (!formData.password) {
+      return toast.error("please input password")
+    }
+    try {
+      const result = await axios.post("http://localhost:5000/register", formData);
+      // Handle success, if needed
+      console.log("Server response:", result.data);
+    } catch (err) {
+      console.error("Axios error:", err);
+      // Handle the error appropriately
+    }
   };
 
   return (
@@ -247,10 +259,24 @@ function Register() {
                     </div>
                   </div>
                 </div>
+                <div className="mb-4">
+                  <label htmlFor="password" className={classForLabel}>
+                    Password
+                  </label>
+                  <div className="mt-2">
+                    <Input
+                      type="password"
+                      name="password"
+                      id="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
 
                 <button
                   type="submit"
-                  className="rounded-md bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className={classForSubmitBtn}
                 >
                   Register Now!
                 </button>
