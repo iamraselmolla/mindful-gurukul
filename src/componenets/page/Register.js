@@ -41,8 +41,11 @@ function Register() {
     }
     try {
       const result = await axios.post("http://localhost:5000/register", formData);
+      if (result?.status === 201) {
+        toast.success(result?.data?.message)
+      }
       // Handle success, if needed
-      console.log("Server response:", result.data);
+      console.log("Server response:", result);
     } catch (err) {
       console.error("Axios error:", err);
       // Handle the error appropriately
@@ -110,7 +113,6 @@ function Register() {
                   </label>
                   <div className="mt-2 flex gap-6">
                     <div className="flex gap-2">
-                      <label>Male</label>{" "}
                       <input
                         type="radio"
                         name="gender"
@@ -118,26 +120,27 @@ function Register() {
                         className="radio"
                         onChange={handleChange}
                       />
+                      <label>Male</label>
                     </div>
                     <div className="flex gap-2">
-                      <label>Female</label>{" "}
                       <input
                         type="radio"
                         name="gender"
                         value="female"
                         className="radio"
                         onChange={handleChange}
-                      />
+                        />
+                        <label>Female</label>
                     </div>
                     <div className="flex gap-2">
-                      <label>Others</label>{" "}
                       <input
                         type="radio"
                         name="gender"
                         value="others"
                         className="radio"
                         onChange={handleChange}
-                      />
+                        />
+                        <label>Others</label>
                     </div>
                   </div>
                 </div>
