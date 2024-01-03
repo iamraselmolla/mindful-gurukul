@@ -41,13 +41,16 @@ function Register() {
     }
     try {
       const result = await axios.post("http://localhost:5000/register", formData);
-      if (result?.status === 201) {
-        toast.success(result?.data?.message)
+
+      if (result?.data?.statusCode === 201) {
+        // User created successfully
+        toast.success(result?.data?.message);
       }
-      // Handle success, if needed
-      console.log("Server response:", result);
     } catch (err) {
-      console.error("Axios error:", err);
+      if (err.response.status === 409) {
+        return toast.error(err?.response?.data?.message)
+      }
+      console.error(err);
       // Handle the error appropriately
     }
   };
@@ -129,8 +132,8 @@ function Register() {
                         value="female"
                         className="radio"
                         onChange={handleChange}
-                        />
-                        <label>Female</label>
+                      />
+                      <label>Female</label>
                     </div>
                     <div className="flex gap-2">
                       <input
@@ -139,8 +142,8 @@ function Register() {
                         value="others"
                         className="radio"
                         onChange={handleChange}
-                        />
-                        <label>Others</label>
+                      />
+                      <label>Others</label>
                     </div>
                   </div>
                 </div>
