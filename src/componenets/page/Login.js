@@ -3,8 +3,10 @@ import Input from "../shared/Input";
 import { classForLabel, classForSubmitBtn } from "../shared/css_classes";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -20,9 +22,9 @@ function Login() {
       if (result.status === 200) {
         console.log(result.data)
         toast.success(result?.data?.message)
-        const { id, login } = result?.data?.data
-        localStorage.setItem('id', id)
-        localStorage.setItem('login', login)
+        navigate('/dashboard')
+        const { id, login, name } = result?.data?.data
+        localStorage.setItem('user', JSON.stringify({ id, name, login }))
       }
 
 

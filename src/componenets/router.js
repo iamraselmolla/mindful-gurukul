@@ -3,6 +3,8 @@ import Main from "./Main";
 import Register from "./page/Register";
 import Login from "./page/Login";
 import NotFound from "./page/NotFound";
+import Dashboard from "./page/Dashboard";
+import Protected from "./shared/Protected";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: '/dashboard',
+        element: <Protected><Dashboard></Dashboard></Protected>
       },
       {
         path: '*',

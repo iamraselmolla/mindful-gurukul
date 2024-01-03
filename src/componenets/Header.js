@@ -1,7 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { findName } from "./utlis/checkUserInfo";
+import toast from "react-hot-toast";
 
 function Header() {
+  const handleLogout = () => {
+    localStorage.removeItem('user')
+    toast.error("Logged Out ❌")
+
+  }
   return (
     <>
       <div className="navbar bg-base-100">
@@ -73,12 +80,18 @@ function Header() {
           </ul>
         </div>
         <div className="navbar-end">
-          <Link to="/register" className="btn mr-4">
-            Register
-          </Link>
-          <Link to="/login" className="btn">
-            Login
-          </Link>
+          {!findName() ? <>
+            <Link to="/register" className="btn mr-4">
+              Register
+            </Link>
+            <Link to="/login" className="btn">
+              Login
+            </Link>
+          </> : <>
+            <button onClick={handleLogout} className="btn mr-4">
+              Logout
+            </button>
+          </>}
         </div>
       </div>
     </>
