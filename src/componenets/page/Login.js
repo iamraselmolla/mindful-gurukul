@@ -1,8 +1,43 @@
 import React from "react";
 import Input from "../shared/Input";
 import { classForLabel, classForSubmitBtn } from "../shared/css_classes";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function Login() {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    console.log(email, password)
+    try {
+      const result = await axios.post("http://localhost:5000/login", {
+        email: email,
+        password: password,
+      });
+      if (result.status === 200) {
+        console.log(result.data)
+        toast.success(result?.data?.message)
+        const { id, login } = result?.data?.data
+        localStorage.setItem('id', id)
+        localStorage.setItem('login', login)
+      }
+
+
+      // You can add logic here to redirect the user or perform other actions
+    } catch (error) {
+      if (error?.response?.status === 400) {
+        toast.error(error.response.data.message)
+      }
+      console.log(error.message);
+
+      // Handle the error appropriately
+      // For example, you can display an error message to the user
+    }
+  };
+
   return (
     <section>
       <div className="container mx-auto px-4">
@@ -11,7 +46,7 @@ function Login() {
             Login!
           </h2>
           <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-2">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div>
                 <div className="mb-4">
                   <label htmlFor="name" className={classForLabel}>
@@ -29,10 +64,7 @@ function Login() {
                     <Input type="password" name="password" id="password" />
                   </div>
                 </div>
-                <button
-                  type="submit"
-                  className={classForSubmitBtn}
-                >
+                <button type="submit" className={classForSubmitBtn}>
                   Login
                 </button>
               </div>

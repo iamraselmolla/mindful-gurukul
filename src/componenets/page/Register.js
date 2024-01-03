@@ -3,6 +3,7 @@ import Input from "../shared/Input";
 import { classForLabel, classForSubmitBtn } from "../shared/css_classes";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ function Register() {
     howDidYouHear: [],
     password: ''
   });
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -45,6 +47,7 @@ function Register() {
       if (result?.data?.statusCode === 201) {
         // User created successfully
         toast.success(result?.data?.message);
+        navigate('/login')
       }
     } catch (err) {
       if (err.response.status === 409) {
