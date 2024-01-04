@@ -8,16 +8,20 @@ export function checkLogin() {
 }
 
 export function findName() {
-    const nameJson = JSON.parse(userInfo)
-    if (nameJson) {
-        const { name } = nameJson
-        return name;
+    if (userInfo) {
+        const nameJson = JSON.parse(userInfo)
+        if (nameJson) {
+            const { name } = nameJson
+            return name;
+        }
     }
 }
 
 
 export function findUserId() {
-    const nameJson = JSON.parse(userInfo)
-    const { id } = nameJson;
-    return id
+    if (userInfo) {
+        const nameJson = JSON.parse(userInfo)
+        const { id } = nameJson;
+        return id
+    }
 }

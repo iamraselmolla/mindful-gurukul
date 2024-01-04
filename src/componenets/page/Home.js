@@ -4,56 +4,16 @@ import { Dialog, Transition } from '@headlessui/react';
 import axios from 'axios';
 import { findUserId } from '../utlis/checkUserInfo';
 
-const Dashboard = () => {
-    const [isOnline, setIsOnline] = useState(navigator.onLine);
-    const [users, setUsers] = useState([]);
+const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [newUser, setNewUser] = useState({ name: '', email: '', phone: '', author: '' });
-    const [reload, setReload] = useState(false)
 
-    const userId = findUserId()
-    const handleAddUser = async () => {
-        if (isOnline) {
-            if (!userId) {
-                return toast.error("Please login first")
-            }
-            try {
-                const response = await axios.post('http://localhost:5000/add-user', {
-                    name: newUser.name,
-                    email: newUser.email,
-                    phone: newUser.phone,
-                    author: userId,
-                })
-                if (response.status === 201) {
-
-                    toast.success('User added successfully');
-                    setIsModalOpen(false);
-                    setNewUser({ name: '', email: '', phone: '', author: '' })
-                    setReload(!reload)
-
-                }
-            } catch (err) {
-                toast.error("Please give unique email, phone number")
-            }
-        } else {
-            toast.error('Please connect WI-FI or Mobile Data');
-        }
-
-
-    };
-
-    const handleViewDetails = (userId) => {
-        // Add your logic to navigate to the details screen
-        // For now, let's just show a toast message
-        toast.info(`View details for user with ID ${userId}`);
-    };
-
+    const [users, setUsers] = useState([]);
 
 
 
     useEffect(() => {
         const fetchUser = async () => {
-            const getAllUser = await axios.get(`http://localhost:5000/users?id=${userId}`);
+            const getAllUser = await axios.get(`http://localhost:5000/users`);
 
             if (getAllUser.status === 200) {
                 setUsers(getAllUser.data.data)
@@ -61,18 +21,12 @@ const Dashboard = () => {
             }
         }
         fetchUser()
-    }, [userId, reload])
+    }, [])
     return (
         <section className="container mx-auto py-10">
-            <div className="flex items-center justify-between">
-                <h1 className="text-4xl">User Dashboard</h1>
-                <button
-                    className="btn btn-primary text-white fw-bolder "
-                    onClick={() => setIsModalOpen(true)}
-                >
-                    Add User
-                </button>
-            </div>
+            <h1 className="text-4xl mb-5">All Added User</h1>
+
+
             {users.length === 0 ? (
                 <div className="mt-8 flex items-center justify-center">
                     <img
@@ -87,7 +41,6 @@ const Dashboard = () => {
                         <div
                             key={user.id}
                             className="p-4 border rounded-md hover:shadow-md cursor-pointer"
-                            onClick={() => handleViewDetails(user.id)}
                         >
                             <h2 className="text-lg font-semibold">{user.name}</h2>
                             <p className="text-gray-600">{user.email}</p>
@@ -140,8 +93,6 @@ const Dashboard = () => {
                                                 id="name"
                                                 className="w-full border p-2 rounded-md"
                                                 placeholder="Enter Name"
-                                                value={newUser.name}
-                                                onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
                                             />
                                         </div>
                                         <div className="mb-4">
@@ -153,8 +104,6 @@ const Dashboard = () => {
                                                 id="email"
                                                 className="w-full border p-2 rounded-md"
                                                 placeholder="Enter email"
-                                                value={newUser.email}
-                                                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
                                             />
                                         </div>
                                         <div className="mb-4">
@@ -166,22 +115,18 @@ const Dashboard = () => {
                                                 id="phone"
                                                 className="w-full border p-2 rounded-md"
                                                 placeholder="Enter phone number"
-                                                value={newUser.phone}
-                                                onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
                                             />
                                         </div>
                                         <div className="flex justify-end">
                                             <button
                                                 type="button"
                                                 className="btn btn-primary mr-2"
-                                                onClick={handleAddUser}
                                             >
                                                 Save
                                             </button>
                                             <button
                                                 type="button"
                                                 className="btn btn-outline"
-                                                onClick={() => setIsModalOpen(false)}
                                             >
                                                 Cancel
                                             </button>
@@ -197,4 +142,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Home;

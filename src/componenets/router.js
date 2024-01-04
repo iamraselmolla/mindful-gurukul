@@ -5,12 +5,18 @@ import Login from "./page/Login";
 import NotFound from "./page/NotFound";
 import Dashboard from "./page/Dashboard";
 import Protected from "./shared/Protected";
+import Home from "./page/Home";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Main />,
     children: [
+      {
+        path: '/',
+        element: <Home />
+
+      },
       {
         path: "/register",
         element: <Register />,
