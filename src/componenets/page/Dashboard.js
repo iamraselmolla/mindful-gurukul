@@ -1,18 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Dialog, Transition } from '@headlessui/react';
+import axios from 'axios';
+import { findUserId } from '../utlis/checkUserInfo';
 
 const Dashboard = () => {
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [users, setUsers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [newUser, setNewUser] = useState({ username: '', email: '', phone: '' });
+    const [newUser, setNewUser] = useState({ name: '', email: '', phone: '', author: '' });
 
-    const handleAddUser = () => {
-        // Add your logic to save the new user data
-        // For now, let's just show a toast message
+    const handleAddUser = async () => {
+        const userId = findUserId()
+        if (!userId) {
+            return toast.error("Please login first")
+        }
+        const response = await axios.post('http://localhost:5000/add-user', {
+            name: newUser.name,
+            email: newUser.email,
+            phone: newUser.phone,
+            author: userId,
+        })
+        console.log(response)
+
         toast.success('User added successfully');
         setIsModalOpen(false);
+        console.log(newUser)
     };
 
     const handleViewDetails = (userId) => {
@@ -58,7 +71,7 @@ const Dashboard = () => {
                             className="p-4 border rounded-md hover:shadow-md cursor-pointer"
                             onClick={() => handleViewDetails(user.id)}
                         >
-                            <h2 className="text-lg font-semibold">{user.username}</h2>
+                            <h2 className="text-lg font-semibold">{user.name}</h2>
                             <p className="text-gray-600">{user.email}</p>
                             <p className="text-gray-600">{user.phone}</p>
                         </div>
@@ -101,16 +114,16 @@ const Dashboard = () => {
                                     <h3 className="text-lg font-semibold mb-4">Add User</h3>
                                     <form>
                                         <div className="mb-4">
-                                            <label htmlFor="username" className="block text-gray-600">
-                                                Username
+                                            <label htmlFor="name" className="block text-gray-600">
+                                                Name
                                             </label>
                                             <input
                                                 type="text"
-                                                id="username"
+                                                id="name"
                                                 className="w-full border p-2 rounded-md"
-                                                placeholder="Enter username"
-                                                value={newUser.username}
-                                                onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
+                                                placeholder="Enter Name"
+                                                value={newUser.name}
+                                                onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
                                             />
                                         </div>
                                         <div className="mb-4">
