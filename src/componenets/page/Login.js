@@ -15,8 +15,6 @@ function Login() {
 
     const email = e.target.email.value;
     const password = e.target.password.value;
-
-    console.log(email, password)
     try {
       const result = await axios.post("http://localhost:5000/login", {
         email: email,

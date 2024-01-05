@@ -4,7 +4,6 @@ import { AuthContext } from "./AuthProvider";
 
 function Header() {
   const { handleLogout, login } = useContext(AuthContext)
-  console.log(login)
   return (
     <>
       <div className="navbar bg-base-100">

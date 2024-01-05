@@ -39,7 +39,6 @@ const SingleUser = ({ user, reload, handleEdit, setReload }) => {
                 <FaRegEdit onClick={() => handleEdit(user)} size={30} />
                 <MdOutlineDelete onClick={() => handleDelete(user?._id)} color='red' size={30} />
             </div>}
-            {console.log(userId)}
         </div>
     );
 };
