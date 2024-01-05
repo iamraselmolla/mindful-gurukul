@@ -72,7 +72,7 @@ const Dashboard = () => {
 
                 } else {
                     if (!userId) {
-                        return toast.error("login first")
+                        return toast.error("login first");
                     }
                     console.log(userId)
                     const response = await axios.post('http://localhost:5000/add-user', {
