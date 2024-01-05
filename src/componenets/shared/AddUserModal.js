@@ -1,7 +1,11 @@
 import { Transition } from '@headlessui/react';
 import React from 'react';
 
-const AddUserModal = ({ setNewUser, newUser, handleAddUser, setIsModalOpen }) => {
+const AddUserModal = ({ setNewUser, newUser, handleAddUser, update, setIsModalOpen }) => {
+    const handleClose = () => {
+        setNewUser({ name: '', email: '', phone: '', author: '' })
+        setIsModalOpen(false)
+    }
     return (
         <Transition.Child
             as={React.Fragment}
@@ -14,7 +18,7 @@ const AddUserModal = ({ setNewUser, newUser, handleAddUser, setIsModalOpen }) =>
         >
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div className="p-4">
-                    <h3 className="text-lg font-semibold mb-4">Add User</h3>
+                    <h3 className="text-lg font-semibold mb-4">Add User </h3>
                     <form>
                         <div className="mb-4">
                             <label htmlFor="name" className="block text-gray-600">
@@ -66,7 +70,10 @@ const AddUserModal = ({ setNewUser, newUser, handleAddUser, setIsModalOpen }) =>
                             <button
                                 type="button"
                                 className="btn btn-outline"
-                                onClick={() => setIsModalOpen(false)}
+                                onClick={() => {
+                                    setIsModalOpen(false)
+                                    setNewUser({ name: '', email: '', phone: '', author: '' })
+                                }}
                             >
                                 Cancel
                             </button>

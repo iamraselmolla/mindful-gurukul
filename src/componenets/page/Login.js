@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import Input from "../shared/Input";
 import { classForLabel, classForSubmitBtn } from "../shared/css_classes";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../AuthProvider";
+import { findUserId } from "../utlis/checkUserInfo";
 
 function Login() {
+  const { setLogin, setUserId } = useContext(AuthContext)
   const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +28,9 @@ function Login() {
         navigate('/dashboard')
         const { id, login, name } = result?.data?.data
         localStorage.setItem('user', JSON.stringify({ id, name, login }))
+        setLogin(true)
+        setUserId(findUserId())
+
       }
 
 

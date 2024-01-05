@@ -1,19 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 import { Dialog, Transition } from '@headlessui/react';
 import axios from 'axios';
-import { findUserId } from '../utlis/checkUserInfo';
+import toast from 'react-hot-toast';
 import AddUserModal from '../shared/AddUserModal';
 import SingleUser from '../shared/SingleUser';
 import { AuthContext } from '../AuthProvider';
+import { findUserId } from '../utlis/checkUserInfo';
 
 const Dashboard = () => {
-    const { userId, reload, setReload } = useContext(AuthContext)
+
+    const { reload, setReload } = useContext(AuthContext)
+    const userId = findUserId()
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [users, setUsers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newUser, setNewUser] = useState({ name: '', email: '', phone: '', author: '' });
-    const [filterType, setFilterType] = useState(''); // 'asc', 'desc', 'lastModified', 'lastInserted'
+    const [filterType, setFilterType] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredUsers, setFilteredUsers] = useState([]);
 
@@ -50,19 +52,32 @@ const Dashboard = () => {
                 return toast.error("Please login first")
             }
             try {
-                const response = await axios.post('http://localhost:5000/add-user', {
-                    name: newUser.name,
-                    email: newUser.email,
-                    phone: newUser.phone,
-                    author: userId,
-                })
-                if (response.status === 201) {
+                if (newUser?._id && newUser?.name && newUser?.email && newUser?.phone) {
+                    const result = await axios.put('http://localhost:5000/update-user', newUser);
+                    if (result.status === 201) {
+                        toast.success(result?.data?.message)
+                        setReload(!reload)
+                        setIsModalOpen(false)
+                        setNewUser({ name: '', email: '', phone: '', author: '' })
+                    }
 
-                    toast.success('User added successfully');
-                    setIsModalOpen(false);
-                    setNewUser({ name: '', email: '', phone: '', author: '' })
-                    setReload(!reload)
 
+
+                } else {
+                    const response = await axios.post('http://localhost:5000/add-user', {
+                        name: newUser.name,
+                        email: newUser.email,
+                        phone: newUser.phone,
+                        author: userId,
+                    })
+                    if (response.status === 201) {
+
+                        toast.success('User added successfully');
+                        setIsModalOpen(false);
+                        setNewUser({ name: '', email: '', phone: '', author: '' })
+                        setReload(!reload)
+
+                    }
                 }
             } catch (err) {
                 toast.error("Please give unique email, phone number")
@@ -74,9 +89,10 @@ const Dashboard = () => {
 
     };
 
-    const handleEdit = (userData) => {
+    const handleEdit = async (userData) => {
         setIsModalOpen(true)
         setNewUser({ ...userData })
+
     };
 
 
@@ -87,6 +103,7 @@ const Dashboard = () => {
         const fetchUser = async () => {
 
             const getAllUser = await axios.get(`http://localhost:5000/users?id=${userId}`);
+            console.log(getAllUser)
 
             if (getAllUser.status === 200) {
                 const usersData = getAllUser.data.data;
@@ -193,7 +210,7 @@ const Dashboard = () => {
                             &#8203;
                         </span>
 
-                        <AddUserModal setIsModalOpen={setIsModalOpen} handleEdit={handleEdit} setNewUser={setNewUser} newUser={newUser} handleAddUser={handleAddUser} />
+                        <AddUserModal update={newUser?._id ? true : false} setIsModalOpen={setIsModalOpen} handleEdit={handleEdit} setNewUser={setNewUser} newUser={newUser} handleAddUser={handleAddUser} />
                     </div>
                 </Dialog>
             </Transition>

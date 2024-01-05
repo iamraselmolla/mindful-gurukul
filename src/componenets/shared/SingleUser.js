@@ -8,11 +8,8 @@ import toast from 'react-hot-toast';
 const SingleUser = ({ user, reload, handleEdit, setReload }) => {
     const { userId } = useContext(AuthContext)
 
-    const handleDelete = async (id, userId) => {
-        console.log(id, userId)
-        if (!userId) {
-            toast.error("Please login first");
-        }
+    const handleDelete = async (id) => {
+
         if (window.confirm('Do you want to delete this')) {
             const result = await axios.delete('http://localhost:5000/delete-user', {
                 data: {
@@ -34,14 +31,15 @@ const SingleUser = ({ user, reload, handleEdit, setReload }) => {
             className="p-4 border rounded-md hover:shadow-md cursor-pointer position-relative "
         // onClick={() => handleViewDetails(user.id)}
         >
-
+            <img src="images/user.png" className='w-20' alt="" />
             <h2 className="text-lg font-semibold">{user.name}</h2>
             <p className="text-gray-600">{user.email}</p>
             <p className="text-gray-600">{user.phone}</p>
-            {user?.author === userId && <div className="flex justify-end mt-3  gap-2">
+            {user?.author === userId && window.location.pathname === '/dashboard' && <div className="flex justify-end mt-3  gap-2">
                 <FaRegEdit onClick={() => handleEdit(user)} size={30} />
-                <MdOutlineDelete onClick={() => handleDelete(user?._id, userId)} color='red' size={30} />
+                <MdOutlineDelete onClick={() => handleDelete(user?._id)} color='red' size={30} />
             </div>}
+            {console.log(userId)}
         </div>
     );
 };
