@@ -6,18 +6,12 @@ import { findUserId } from './utlis/checkUserInfo';
 export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
     const [login, setLogin] = useState(false);
-    const [userId, setUserId] = useState(findUserId())
+    const [userId, setUserId] = useState(null)
     const [reload, setReload] = useState(false)
 
-    const handleLogout = () => {
-        localStorage.removeItem('user')
-        toast.error("Logged Out ❌")
-        setLogin(false)
-        setUserId(null)
 
-    }
 
-    const authInfo = { login, handleLogout, userId, setLogin, reload, setReload }
+    const authInfo = { login, setUserId, userId, setLogin, reload, setReload }
     return (
         <AuthContext.Provider value={authInfo}>
             {children}

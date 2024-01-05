@@ -1,9 +1,28 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "./AuthProvider";
+import toast from "react-hot-toast";
 
 function Header() {
-  const { handleLogout, login } = useContext(AuthContext)
+  const { login, userId, setLogin, setUserId } = useContext(AuthContext)
+  const [yes, setYes] = useState(false)
+
+  useEffect(() => {
+    if (login) {
+      setYes(true)
+    }
+  }, [login, userId]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user')
+    toast.error("Logged Out ❌")
+    setLogin(false)
+    setUserId(null)
+    setYes(false)
+
+
+
+  }
   return (
     <>
       <div className="navbar bg-base-100">
@@ -46,7 +65,7 @@ function Header() {
           </ul>
         </div>
         <div className="navbar-end">
-          {!login ? <>
+          {!yes ? <>
             <Link to="/register" className="btn mr-4">
               Register
             </Link>

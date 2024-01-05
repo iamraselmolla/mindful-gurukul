@@ -6,10 +6,11 @@ import AddUserModal from '../shared/AddUserModal';
 import SingleUser from '../shared/SingleUser';
 import { AuthContext } from '../AuthProvider';
 import { findUserId } from '../utlis/checkUserInfo';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
 
-    const { reload, setReload } = useContext(AuthContext)
+    const { reload, setReload, login } = useContext(AuthContext)
     const [userId, setUserId] = useState(findUserId())
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [users, setUsers] = useState([]);
@@ -18,6 +19,12 @@ const Dashboard = () => {
     const [filterType, setFilterType] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const [beLogin, setBeLogin] = useState(false)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        setUserId(findUserId())
+    }, [login])
 
 
 
@@ -140,19 +147,27 @@ const Dashboard = () => {
             }
         };
         fetchUser();
-    }, [userId, reload, filterType, searchQuery,]);
+    }, [userId, reload, filterType, searchQuery]);
+
+
+    useEffect(() => {
+        if (!login) {
+            navigate('/login')
+            toast.error('Please login first')
+        }
+    }, [])
 
     return (
         <section className="container mx-auto py-10">
             <div className="items-center justify-between">
                 <div className="flex mb-5 justify-between">
                     <h1 className="text-4xl">User Dashboard</h1>
-                    <button
+                    {login && <button
                         className="btn btn-primary text-white fw-bolder "
                         onClick={() => setIsModalOpen(true)}
                     >
                         Add User
-                    </button>
+                    </button>}
                 </div>
 
 
