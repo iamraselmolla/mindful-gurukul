@@ -8,8 +8,8 @@ import SingleUser from '../shared/SingleUser';
 const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isOnline, setIsOnline] = useState(navigator.onLine)
-
     const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(false)
 
 
 
@@ -17,18 +17,22 @@ const Home = () => {
         const fetchUser = async () => {
             try {
                 if (isOnline) {
+                    setLoading(true)
                     const getAllUser = await axios.get(`http://localhost:5000/users`);
 
                     if (getAllUser.status === 200) {
                         setUsers(getAllUser.data.data)
+                        setLoading(false)
                     }
                 }
                 else {
                     toast.error("Please connect your Wi-Fi or Mobile Data")
+                    setLoading(false)
                 }
             }
             catch (err) {
                 console.log(err.message)
+                setLoading(false)
             }
         }
         fetchUser()
@@ -38,15 +42,16 @@ const Home = () => {
         // For now, let's just show a toast message
         toast.success(`View details for user with ID ${userId}`);
     };
+    if (loading) {
+        return <span className="loading loading-dots loading-lg"></span>
+    }
     return (
         <section className="container mx-auto py-10">
             <h1 className="text-4xl mb-5">All Added User</h1>
-
-
-            {users.length === 0 ? (
+            {!loading && users?.length === 0 ? (
                 <div className="mt-8 flex items-center justify-center">
                     <img
-                        src="images/no-data-found.png"  // Replace with your placeholder image path
+                        src="images/no-data-found.png"
                         alt="No Data Found"
                         className="max-w-full h-auto"
                     />
@@ -54,7 +59,7 @@ const Home = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
                     {users.map((user) => (
-                        <SingleUser user={user} handleViewDetails={handleViewDetails} />
+                        <SingleUser key={user?._id} user={user} handleViewDetails={handleViewDetails} />
                     ))}
                 </div>
             )}
