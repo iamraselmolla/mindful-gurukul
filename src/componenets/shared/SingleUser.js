@@ -5,7 +5,7 @@ import { AuthContext } from '../AuthProvider';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const SingleUser = ({ user, handleViewDetails, reload, setReload }) => {
+const SingleUser = ({ user, reload, handleEdit, setReload }) => {
     const { userId } = useContext(AuthContext)
 
     const handleDelete = async (id, userId) => {
@@ -19,14 +19,14 @@ const SingleUser = ({ user, handleViewDetails, reload, setReload }) => {
                     id
                 }
             })
-            console.log(result)
             if (result.status === 200) {
-                toast.success("Deleted Successfull");
+                toast.success("Deleted");
                 setReload(!reload)
             }
         }
 
     }
+
 
     return (
         <div
@@ -39,7 +39,7 @@ const SingleUser = ({ user, handleViewDetails, reload, setReload }) => {
             <p className="text-gray-600">{user.email}</p>
             <p className="text-gray-600">{user.phone}</p>
             {user?.author === userId && <div className="flex justify-end mt-3  gap-2">
-                <FaRegEdit size={30} />
+                <FaRegEdit onClick={() => handleEdit(user)} size={30} />
                 <MdOutlineDelete onClick={() => handleDelete(user?._id, userId)} color='red' size={30} />
             </div>}
         </div>

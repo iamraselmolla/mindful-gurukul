@@ -42,6 +42,8 @@ const Dashboard = () => {
             }
         }
     }, []);
+
+
     const handleAddUser = async () => {
         if (isOnline) {
             if (!userId) {
@@ -72,10 +74,9 @@ const Dashboard = () => {
 
     };
 
-    const handleViewDetails = (userId) => {
-        // Add your logic to navigate to the details screen
-        // For now, let's just show a toast message
-        toast.success(`View details for user with ID ${userId}`);
+    const handleEdit = (userData) => {
+        setIsModalOpen(true)
+        setNewUser({ ...userData })
     };
 
 
@@ -119,6 +120,7 @@ const Dashboard = () => {
         };
         fetchUser();
     }, [userId, reload, filterType, searchQuery,]);
+
     return (
         <section className="container mx-auto py-10">
             <div className="items-center justify-between">
@@ -165,7 +167,7 @@ const Dashboard = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
                     {filteredUsers.map((user) => (
-                        <SingleUser reload={reload} setReload={setReload} key={user?._id} user={user} handleViewDetails={handleViewDetails} />
+                        <SingleUser reload={reload} setReload={setReload} key={user?._id} user={user} handleEdit={handleEdit} />
                     ))}
                 </div>
             )}
@@ -191,7 +193,7 @@ const Dashboard = () => {
                             &#8203;
                         </span>
 
-                        <AddUserModal setNewUser={setNewUser} newUser={newUser} setIsModalOpen={setIsModalOpen} handleAddUser={handleAddUser} />
+                        <AddUserModal setIsModalOpen={setIsModalOpen} handleEdit={handleEdit} setNewUser={setNewUser} newUser={newUser} handleAddUser={handleAddUser} />
                     </div>
                 </Dialog>
             </Transition>
