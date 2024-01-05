@@ -11,7 +11,7 @@ const SingleUser = ({ user, reload, handleEdit, setReload }) => {
     const handleDelete = async (id) => {
 
         if (window.confirm('Do you want to delete this')) {
-            const result = await axios.delete('http://localhost:5000/delete-user', {
+            const result = await axios.delete('https://mindful-gurukul-server-sandy.vercel.app/delete-user', {
                 data: {
                     id
                 }

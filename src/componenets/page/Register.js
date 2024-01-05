@@ -42,7 +42,7 @@ function Register() {
       return toast.error("please input password")
     }
     try {
-      const result = await axios.post("http://localhost:5000/register", formData);
+      const result = await axios.post("https://mindful-gurukul-server-sandy.vercel.app/register", formData);
 
       if (result?.data?.statusCode === 201) {
         // User created successfully

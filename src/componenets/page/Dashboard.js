@@ -60,7 +60,7 @@ const Dashboard = () => {
             }
             try {
                 if (newUser?._id && newUser?.name && newUser?.email && newUser?.phone) {
-                    const result = await axios.put('http://localhost:5000/update-user', newUser);
+                    const result = await axios.put('https://mindful-gurukul-server-sandy.vercel.app/update-user', newUser);
                     if (result.status === 201) {
                         toast.success(result?.data?.message)
                         setReload(!reload)
@@ -75,7 +75,7 @@ const Dashboard = () => {
                         return toast.error("login first");
                     }
                     console.log(userId)
-                    const response = await axios.post('http://localhost:5000/add-user', {
+                    const response = await axios.post('https://mindful-gurukul-server-sandy.vercel.app/add-user', {
                         name: newUser.name,
                         email: newUser.email,
                         phone: newUser.phone,
@@ -113,7 +113,7 @@ const Dashboard = () => {
 
         const fetchUser = async () => {
 
-            const getAllUser = await axios.get(`http://localhost:5000/users?id=${userId}`);
+            const getAllUser = await axios.get(`https://mindful-gurukul-server-sandy.vercel.app/users?id=${userId}`);
 
 
             if (getAllUser.status === 200) {

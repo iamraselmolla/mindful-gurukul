@@ -16,7 +16,7 @@ function Login() {
     const email = e.target.email.value;
     const password = e.target.password.value;
     try {
-      const result = await axios.post("http://localhost:5000/login", {
+      const result = await axios.post("https://mindful-gurukul-server-sandy.vercel.app/login", {
         email: email,
         password: password,
       });

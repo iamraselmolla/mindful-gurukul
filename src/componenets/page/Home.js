@@ -18,7 +18,7 @@ const Home = () => {
             try {
                 if (isOnline) {
                     setLoading(true)
-                    const getAllUser = await axios.get(`http://localhost:5000/users`);
+                    const getAllUser = await axios.get(`https://mindful-gurukul-server-sandy.vercel.app/users`);
 
                     if (getAllUser.status === 200) {
                         setUsers(getAllUser.data.data)
