@@ -8,12 +8,11 @@ import SingleUser from '../shared/SingleUser';
 import { AuthContext } from '../AuthProvider';
 
 const Dashboard = () => {
-    const { userId } = useContext(AuthContext)
+    const { userId, reload, setReload } = useContext(AuthContext)
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [users, setUsers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newUser, setNewUser] = useState({ name: '', email: '', phone: '', author: '' });
-    const [reload, setReload] = useState(false)
     const [filterType, setFilterType] = useState(''); // 'asc', 'desc', 'lastModified', 'lastInserted'
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredUsers, setFilteredUsers] = useState([]);
@@ -119,7 +118,7 @@ const Dashboard = () => {
             }
         };
         fetchUser();
-    }, [userId, reload, filterType, searchQuery]);
+    }, [userId, reload, filterType, searchQuery,]);
     return (
         <section className="container mx-auto py-10">
             <div className="items-center justify-between">
@@ -166,7 +165,7 @@ const Dashboard = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
                     {filteredUsers.map((user) => (
-                        <SingleUser key={user?._id} user={user} handleViewDetails={handleViewDetails} />
+                        <SingleUser reload={reload} setReload={setReload} key={user?._id} user={user} handleViewDetails={handleViewDetails} />
                     ))}
                 </div>
             )}
