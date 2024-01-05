@@ -1,14 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { findName } from "./utlis/checkUserInfo";
-import toast from "react-hot-toast";
+import { AuthContext } from "./AuthProvider";
 
 function Header() {
-  const handleLogout = () => {
-    localStorage.removeItem('user')
-    toast.error("Logged Out ❌")
-
-  }
+  const { handleLogout, login } = useContext(AuthContext)
   return (
     <>
       <div className="navbar bg-base-100">
@@ -80,7 +75,7 @@ function Header() {
           </ul>
         </div>
         <div className="navbar-end">
-          {!findName() ? <>
+          {!login ? <>
             <Link to="/register" className="btn mr-4">
               Register
             </Link>

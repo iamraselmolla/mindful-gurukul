@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import { Dialog, Transition } from '@headlessui/react';
 import axios from 'axios';
 import { findUserId } from '../utlis/checkUserInfo';
+import SingleUser from '../shared/SingleUser';
 
 const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,6 +33,11 @@ const Home = () => {
         }
         fetchUser()
     }, [])
+    const handleViewDetails = (userId) => {
+        // Add your logic to navigate to the details screen
+        // For now, let's just show a toast message
+        toast.success(`View details for user with ID ${userId}`);
+    };
     return (
         <section className="container mx-auto py-10">
             <h1 className="text-4xl mb-5">All Added User</h1>
@@ -48,14 +54,7 @@ const Home = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
                     {users.map((user) => (
-                        <div
-                            key={user.id}
-                            className="p-4 border rounded-md hover:shadow-md cursor-pointer"
-                        >
-                            <h2 className="text-lg font-semibold">{user.name}</h2>
-                            <p className="text-gray-600">{user.email}</p>
-                            <p className="text-gray-600">{user.phone}</p>
-                        </div>
+                        <SingleUser user={user} handleViewDetails={handleViewDetails} />
                     ))}
                 </div>
             )}
