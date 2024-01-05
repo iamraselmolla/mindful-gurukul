@@ -43,7 +43,9 @@ const Home = () => {
         toast.success(`View details for user with ID ${userId}`);
     };
     if (loading) {
-        return <span className="loading loading-dots loading-lg"></span>
+        return <div className='flex justify-center items-start'>
+            <span className="loading loading-dots loading-lg"></span>
+        </div>
     }
     return (
         <section className="container mx-auto py-10">
