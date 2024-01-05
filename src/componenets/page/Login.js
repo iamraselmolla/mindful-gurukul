@@ -23,7 +23,7 @@ function Login() {
       if (result.status === 200) {
         console.log(result.data)
         toast.success(result?.data?.message)
-        navigate('/dashboard')
+        navigate('/')
         const { id, login, name } = result?.data?.data
         localStorage.setItem('user', JSON.stringify({ id, name, login }))
         setLogin(true)

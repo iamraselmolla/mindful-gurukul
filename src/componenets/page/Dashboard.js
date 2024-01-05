@@ -10,7 +10,7 @@ import { findUserId } from '../utlis/checkUserInfo';
 const Dashboard = () => {
 
     const { reload, setReload } = useContext(AuthContext)
-    const userId = findUserId()
+    const [userId, setUserId] = useState(findUserId())
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [users, setUsers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,6 +64,10 @@ const Dashboard = () => {
 
 
                 } else {
+                    if (!userId) {
+                        return toast.error("login first")
+                    }
+                    console.log(userId)
                     const response = await axios.post('http://localhost:5000/add-user', {
                         name: newUser.name,
                         email: newUser.email,
@@ -103,7 +107,7 @@ const Dashboard = () => {
         const fetchUser = async () => {
 
             const getAllUser = await axios.get(`http://localhost:5000/users?id=${userId}`);
-            console.log(getAllUser)
+
 
             if (getAllUser.status === 200) {
                 const usersData = getAllUser.data.data;
@@ -178,7 +182,7 @@ const Dashboard = () => {
                     <img
                         src="images/no-data-found.png"  // Replace with your placeholder image path
                         alt="No Data Found"
-                        className="max-w-full h-auto"
+                        className="w-1/3 h-auto"
                     />
                 </div>
             ) : (

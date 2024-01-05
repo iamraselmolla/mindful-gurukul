@@ -53,7 +53,7 @@ const Home = () => {
                     <img
                         src="images/no-data-found.png"
                         alt="No Data Found"
-                        className="max-w-full h-auto"
+                        className="w-1/3 h-auto"
                     />
                 </div>
             ) : (
