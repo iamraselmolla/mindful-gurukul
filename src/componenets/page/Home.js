@@ -6,6 +6,7 @@ import { findUserId } from '../utlis/checkUserInfo';
 
 const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isOnline, setIsOnline] = useState(navigator.onLine)
 
     const [users, setUsers] = useState([]);
 
@@ -13,11 +14,20 @@ const Home = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const getAllUser = await axios.get(`http://localhost:5000/users`);
+            try {
+                if (isOnline) {
+                    const getAllUser = await axios.get(`http://localhost:5000/users`);
 
-            if (getAllUser.status === 200) {
-                setUsers(getAllUser.data.data)
-                console.log(getAllUser.data.data)
+                    if (getAllUser.status === 200) {
+                        setUsers(getAllUser.data.data)
+                    }
+                }
+                else {
+                    toast.error("Please connect your Wi-Fi or Mobile Data")
+                }
+            }
+            catch (err) {
+                console.log(err.message)
             }
         }
         fetchUser()

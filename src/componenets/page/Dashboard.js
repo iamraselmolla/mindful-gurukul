@@ -10,8 +10,35 @@ const Dashboard = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newUser, setNewUser] = useState({ name: '', email: '', phone: '', author: '' });
     const [reload, setReload] = useState(false)
+    const [filterType, setFilterType] = useState(''); // 'asc', 'desc', 'lastModified', 'lastInserted'
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredUsers, setFilteredUsers] = useState([]);
 
     const userId = findUserId()
+
+    const saveToLocalStorage = () => {
+        try {
+            const stateToSave = {
+                filterType,
+                searchQuery,
+            };
+            localStorage.setItem('dashboardState', JSON.stringify(stateToSave));
+        } catch (error) {
+            console.error('Error saving to localStorage:', error);
+        }
+    };
+    useEffect(() => {
+        const savedState = localStorage.getItem('dashboardState');
+        if (savedState) {
+            try {
+                const parsedState = JSON.parse(savedState);
+                setFilterType(parsedState.filterType);
+                setSearchQuery(parsedState.searchQuery);
+            } catch (error) {
+                console.error('Error parsing localStorage data:', error);
+            }
+        }
+    }, []);
     const handleAddUser = async () => {
         if (isOnline) {
             if (!userId) {
@@ -45,27 +72,71 @@ const Dashboard = () => {
     const handleViewDetails = (userId) => {
         // Add your logic to navigate to the details screen
         // For now, let's just show a toast message
-        toast.info(`View details for user with ID ${userId}`);
+        toast.success(`View details for user with ID ${userId}`);
     };
 
 
 
 
     useEffect(() => {
+
         const fetchUser = async () => {
+
             const getAllUser = await axios.get(`http://localhost:5000/users?id=${userId}`);
 
             if (getAllUser.status === 200) {
-                setUsers(getAllUser.data.data)
-                console.log(getAllUser.data.data)
+                const usersData = getAllUser.data.data;
+
+                // Apply Filter
+                let filteredList = [...usersData];
+                if (filterType === 'asc') {
+                    filteredList = filteredList.sort((a, b) => a.name.localeCompare(b.name));
+                } else if (filterType === 'desc') {
+                    filteredList = filteredList.sort((a, b) => b.name.localeCompare(a.name));
+                } else if (filterType === 'lastModified') {
+                    // Implement your lastModified logic
+                } else if (filterType === 'lastInserted') {
+                    // Implement your lastInserted logic
+                }
+
+                // Apply Search
+                if (searchQuery) {
+                    filteredList = filteredList.filter(
+                        (user) =>
+                            user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            user.phone.includes(searchQuery)
+                    );
+                }
+
+                setFilteredUsers(filteredList);
+                saveToLocalStorage();
             }
-        }
-        fetchUser()
-    }, [userId, reload])
+        };
+        fetchUser();
+    }, [userId, reload, filterType, searchQuery]);
     return (
         <section className="container mx-auto py-10">
             <div className="flex items-center justify-between">
                 <h1 className="text-4xl">User Dashboard</h1>
+                <select
+                    className="p-2 border rounded-md"
+                    value={filterType}
+                    onChange={(e) => setFilterType(e.target.value)}
+                >
+                    <option value="">Select Filter</option>
+                    <option value="asc">A-Z</option>
+                    <option value="desc">Z-A</option>
+                    <option value="lastModified">Last Modified</option>
+                    <option value="lastInserted">Last Inserted</option>
+                </select>
+                <input
+                    type="text"
+                    className="w-full p-2 border rounded-md ml-4"
+                    placeholder="Search by Name, Mobile, or Email"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
                 <button
                     className="btn btn-primary text-white fw-bolder "
                     onClick={() => setIsModalOpen(true)}
@@ -73,7 +144,7 @@ const Dashboard = () => {
                     Add User
                 </button>
             </div>
-            {users.length === 0 ? (
+            {filteredUsers.length === 0 ? (
                 <div className="mt-8 flex items-center justify-center">
                     <img
                         src="images/no-data-found.png"  // Replace with your placeholder image path
@@ -83,7 +154,7 @@ const Dashboard = () => {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
-                    {users.map((user) => (
+                    {filteredUsers.map((user) => (
                         <div
                             key={user.id}
                             className="p-4 border rounded-md hover:shadow-md cursor-pointer"
