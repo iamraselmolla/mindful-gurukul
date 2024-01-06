@@ -12,11 +12,15 @@ function Register() {
     phone: "",
     gender: "",
     city: "Mumbai",
-    state: "Gujarat",
+    state: "",
     howDidYouHear: [],
-    password: ''
+    password: "",
+    stateInput: "",
   });
-  const navigate = useNavigate()
+
+  const [matchingStates, setMatchingStates] = useState([]);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -29,34 +33,60 @@ function Register() {
           : prevData.howDidYouHear.filter((item) => item !== name),
       }));
     } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
+      if (name === "stateInput") {
+        setFormData((prevData) => ({
+          ...prevData,
+          stateInput: value,
+        }));
+
+        // Update the matching states based on the input
+        setMatchingStates(
+          states.filter((state) =>
+            state.toLowerCase().includes(value.toLowerCase())
+          )
+        );
+      } else {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
     }
+  };
+
+  const handleStateSelection = (selectedState) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      state: selectedState,
+      stateInput: selectedState,
+    }));
+    setMatchingStates([]); // Clear matching states after selection
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.password) {
-      return toast.error("please input password")
+      return toast.error("please input password");
     }
     try {
-      const result = await axios.post("https://mindful-gurukul-server-sandy.vercel.app/register", formData);
+      const result = await axios.post(
+        "https://mindful-gurukul-server-sandy.vercel.app/register",
+        formData
+      );
 
       if (result?.data?.statusCode === 201) {
-        // User created successfully
         toast.success(result?.data?.message);
-        navigate('/login')
+        navigate("/login");
       }
     } catch (err) {
       if (err.response.status === 409) {
-        return toast.error(err?.response?.data?.message)
+        return toast.error(err?.response?.data?.message);
       }
       console.error(err);
-      // Handle the error appropriately
     }
   };
+
+  const states = ["Gujarat", "Maharashtra", "Karnataka", /* Add more states */];
 
   return (
     <section>
@@ -223,8 +253,6 @@ function Register() {
                           </label>
                         </div>
                       </div>
-
-                      {/* Repeat similar structure for other checkboxes */}
                     </div>
                   </fieldset>
                 </div>
@@ -250,24 +278,36 @@ function Register() {
                   </div>
 
                   <div className="mb-4 w-full">
-                    <label htmlFor="state" className={classForLabel}>
+                    <label htmlFor="stateInput" className={classForLabel}>
                       State
                     </label>
                     <div className="mt-2">
-                      <select
-                        id="state"
-                        name="state"
+                      <input
+                        type="text"
+                        id="stateInput"
+                        name="stateInput"
                         className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                        value={formData.state}
+                        placeholder="Start typing to filter states"
+                        value={formData.stateInput}
                         onChange={handleChange}
-                      >
-                        <option>Gujarat</option>
-                        <option>Maharashtra</option>
-                        <option>Karnataka</option>
-                      </select>
+                      />
+                      {matchingStates.length > 0 && (
+                        <div className="mt-1 border border-gray-300 bg-white rounded-md shadow-lg max-h-36 overflow-y-auto">
+                          {matchingStates.map((state) => (
+                            <div
+                              key={state}
+                              className="px-2 py-1 cursor-pointer hover:bg-gray-100"
+                              onClick={() => handleStateSelection(state)}
+                            >
+                              {state}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
+
                 <div className="mb-4">
                   <label htmlFor="password" className={classForLabel}>
                     Password
@@ -299,7 +339,6 @@ function Register() {
       </div>
     </section>
   );
-
 }
 
 export default Register;
