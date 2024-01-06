@@ -1,12 +1,12 @@
 import React, { createContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { findUserId } from './utlis/checkUserInfo';
+import { checkLogin, findUserId } from './utlis/checkUserInfo';
 
 export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
-    const [login, setLogin] = useState(false);
-    const [userId, setUserId] = useState(null)
+    const [login, setLogin] = useState(checkLogin());
+    const [userId, setUserId] = useState(findUserId())
     const [reload, setReload] = useState(false)
 
 

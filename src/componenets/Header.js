@@ -7,22 +7,20 @@ function Header() {
   const { login, userId, setLogin, setUserId } = useContext(AuthContext)
   const [yes, setYes] = useState(false)
 
-  useEffect(() => {
-    if (login) {
-      setYes(true)
-    }
-  }, [login, userId]);
-
   const handleLogout = () => {
     localStorage.removeItem('user')
-    toast.error("Logged Out ❌")
+    toast.error("Logged Out")
     setLogin(false)
     setUserId(null)
     setYes(false)
-
-
-
   }
+  useEffect(() => {
+    if (login || userId) {
+      setYes(true)
+      setLogin(true)
+    }
+  }, [login, userId]);
+  console.log(login, yes, userId)
   return (
     <>
       <div className="navbar bg-base-100">

@@ -13,13 +13,11 @@ const Dashboard = () => {
     const { reload, setReload, login } = useContext(AuthContext)
     const [userId, setUserId] = useState(findUserId())
     const [isOnline, setIsOnline] = useState(navigator.onLine);
-    const [users, setUsers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newUser, setNewUser] = useState({ name: '', email: '', phone: '', author: '' });
     const [filterType, setFilterType] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredUsers, setFilteredUsers] = useState([]);
-    const [beLogin, setBeLogin] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -151,11 +149,11 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-        if (!login) {
+        if (!login && !userId) {
             navigate('/login')
             toast.error('Please login first')
         }
-    }, [])
+    }, [userId, login])
 
     return (
         <section className="container mx-auto py-10">
@@ -201,7 +199,7 @@ const Dashboard = () => {
                     />
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
                     {filteredUsers.map((user) => (
                         <SingleUser reload={reload} setReload={setReload} key={user?._id} user={user} handleEdit={handleEdit} />
                     ))}
